@@ -1,0 +1,17 @@
+FIREBASE SETUP
+
+1. Open the Firebase project used by this system: chommany-store.
+2. Enable Authentication > Sign-in method > Email/Password.
+3. Create a Cloud Firestore database.
+4. The Web App configuration is already placed in firebase-config.js using the configuration supplied for this system.
+5. Publish firestore.rules as the Firestore Security Rules.
+6. Open the app through a web server (for example VS Code Live Server or Firebase Hosting). Firebase browser SDKs do not require IndexedDB/localStorage for the store records in this app.
+7. Create the initial admin in Firebase Authentication using the credentials in ADMIN_CREDENTIALS.txt. The password is handled by Firebase Authentication and is not written into Firestore.
+8. After first login, go to Settings > Admin Account and change the name/password.
+
+CLOUD STORAGE
+- Store settings and inventory data are saved to Cloud Firestore.
+- Products, suppliers, transactions, daily closings, monthly closings, stock counts, store settings, and admin profile data are cloud records.
+- The browser does not use localStorage or IndexedDB as the store database.
+- Cloud capacity/quota is governed by the Firebase/Google Cloud plan for this project; this app does not impose a browser database limit.
+- JSON Export/Restore is a manual backup/import function only; it is not the primary database.

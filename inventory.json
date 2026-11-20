@@ -1,0 +1,45 @@
+{
+  "settings": {
+    "storeName": "Neerada School Store",
+    "branch": "Chommany",
+    "currency": "LAK",
+    "defaultMin": 5
+  },
+  "products": [
+    {
+      "id": "p1",
+      "sku": "BEV-001",
+      "name": "Bottled Water 600ml",
+      "category": "Beverages",
+      "cost": 3500,
+      "price": 5000,
+      "stock": 40,
+      "min": 10,
+      "max": 60
+    },
+    {
+      "id": "p2",
+      "sku": "SNK-001",
+      "name": "Potato Chips",
+      "category": "Snacks",
+      "cost": 7000,
+      "price": 10000,
+      "stock": 25,
+      "min": 8,
+      "max": 40
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "s1",
+      "name": "Sample Supplier",
+      "contact": "Purchasing",
+      "phone": "",
+      "products": []
+    }
+  ],
+  "transactions": [],
+  "daily": [],
+  "monthly": [],
+  "stockCounts": []
+}

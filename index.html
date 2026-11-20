@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" id="appHtml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Neerada School Store Inventory System</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="splashScreen" class="splash-screen" aria-label="Neerada School Store Inventory System">
+  <img src="neerada-logo.png" class="splash-logo" alt="Neerada School logo">
+  <div class="splash-title"><span class="splash-red">N</span><span class="splash-orange">E</span><span class="splash-green">E</span><span class="splash-red">R</span><span class="splash-orange">A</span><span class="splash-green">D</span><span class="splash-red">A</span></div>
+  <div class="splash-subtitle">INVENTORY SYSTEM</div>
+</div>
+<div id="loginScreen" class="login-screen" aria-label="Neerada School Store Inventory System login">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="login-stripes"></div>
+      <img src="neerada-logo.png" class="login-logo" alt="Neerada School logo">
+      <div class="login-wordmark"><span>N</span><span>E</span><span>E</span><span>R</span><span>A</span><span>D</span><span>A</span></div>
+      <div class="login-subtitle">SCHOOL STORE INVENTORY</div>
+    </div>
+    <div class="login-form">
+      <h2>Store Login</h2>
+      <p>Sign in to continue to the inventory system.</p>
+      <label>Username / Email<input id="loginEmail" type="email" autocomplete="username" placeholder="Username or email"></label>
+      <label>Password<span class="password-wrap"><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password"><button type="button" class="password-eye" id="passwordEye" aria-label="Show or hide password">◉</button></span></label>
+      <label class="remember-row"><input id="rememberMe" type="checkbox"> <span>Remember me</span></label>
+      <button class="btn primary full login-btn" id="loginBtn">Login</button>
+      <div id="loginStatus" class="login-status"></div>
+    </div>
+  </div>
+</div>
+<aside class="sidebar auth-required">
+  <div class="logo"><div class="stripes"></div><div class="seven"><span class="seven-green">NEE</span><span class="seven-red">RADA</span></div><div class="logo-subtitle">STORE INVENTORY SYSTEM</div></div>
+  <nav>
+    <button class="nav active" data-page="dashboard">▦ <span>Dashboard</span></button>
+    <button class="nav" data-page="pos">🛒 <span>POS / Sales</span></button>
+    <button class="nav" data-page="products">📦 <span>Products</span></button>
+    <button class="nav" data-page="inventory">↻ <span>Inventory</span></button>
+    <button class="nav" data-page="purchasing">🚚 <span>Purchasing</span></button>
+    <button class="nav" data-page="adjustments">⇄ <span>Stock Adjustments</span></button>
+    <button class="nav" data-page="suppliers">♙ <span>Suppliers</span></button>
+    <button class="nav" data-page="reports">▥ <span>Reports</span></button>
+    <button class="nav" data-page="daily">▣ <span>Daily Closing</span></button>
+    <button class="nav" data-page="monthly">▤ <span>Monthly Closing</span></button>
+    <button class="nav" data-page="settings">⚙ <span>Settings & Backup</span></button>
+  </nav>
+  <button class="nav auth-required" id="logoutBtn" onclick="logout()">↪ <span>Logout</span></button><div class="side-foot"><div>Firebase Cloud • v2.0</div><div class="copyright">(c) <span id="copyrightYear">2026</span> Neerada Store, created by Teacher Jefry</div></div>
+</aside>
+
+<main class="main auth-required">
+<header class="topbar">
+  <div><h1 id="pageTitle">Dashboard</h1><p id="todayLabel"></p></div>
+  <div class="top-actions">
+    <button class="language-toggle" id="languageToggle" type="button" aria-label="Switch language" title="Switch language"><span id="languageLabel">🇬🇧 EN / 🇱🇦 ລາວ</span></button>
+    <div class="theme-picker-wrap">
+      <button class="theme-palette-btn" id="themePaletteBtn" type="button" aria-expanded="false" aria-haspopup="true" title="Choose theme">🎨</button>
+      <div class="theme-palette" id="themePalette" hidden>
+        <button type="button" data-theme-choice="neerada">🌿 <span>Neerada</span></button>
+        <button type="button" data-theme-choice="mcdo">🍟 <span>McDo</span></button>
+        <button type="button" data-theme-choice="starbucks">☕ <span>Starbucks</span></button>
+        <button type="button" data-theme-choice="kfc">🍗 <span>KFC</span></button>
+      </div>
+    </div>
+    <div class="profile-wrap">
+      <button class="profile-card" id="profileBtn" type="button" aria-expanded="false" aria-haspopup="true">
+        <span class="profile-avatar" id="profileAvatar">J</span>
+        <span class="profile-copy"><strong id="welcomeLabel">Good afternoon, Jefry G.!</strong><small>Administrator</small></span>
+        <span class="profile-chevron">⌄</span>
+      </button>
+      <div class="profile-menu" id="profileMenu" hidden>
+        <button type="button" onclick="editPersonalInfo()">✎ <span>Edit Personal Information</span></button>
+        <button type="button" onclick="logout()">↪ <span>Logout</span></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="dashboard" class="page active">
+  <div class="period-tabs"><button class="period active" data-period="today">Today</button><button class="period" data-period="week">This Week</button><button class="period" data-period="month">This Month</button></div>
+  <div class="cards">
+    <div class="card green"><span>Sales Today</span><strong id="kSales">0</strong><small id="salesTrend"></small></div>
+    <div class="card orange"><span>COGS Today</span><strong id="kCogs">0</strong></div>
+    <div class="card red"><span>Gross Profit</span><strong id="kProfit">0</strong><small id="margin"></small></div>
+    <div class="card blue"><span>Inventory Capital</span><strong id="kInventory">0</strong><small id="kUnits"></small></div>
+    <div class="card purple"><span>Active SKUs</span><strong id="kSkus">0</strong></div>
+    <div class="card yellow"><span>Low Stock</span><strong id="kLow">0</strong><button onclick="showPage('inventory')">View Items →</button></div>
+  </div>
+  <div class="quick">
+    <button onclick="showPage('pos')">🛒<b>New Sale</b><small>POS</small></button>
+    <button onclick="showPage('purchasing')">🚚<b>Receive Stock</b><small>Purchase</small></button>
+    <button onclick="openProductModal()">＋<b>Add Product</b><small>New SKU</small></button>
+    <button onclick="showPage('inventory')">☑<b>Stock Count</b><small>Inventory</small></button>
+    <button onclick="showPage('daily')">▣<b>Daily Closing</b><small>Cash & Stock</small></button>
+    <button onclick="showPage('reports')">▥<b>Reports</b><small>Sales / Profit</small></button>
+  </div>
+  <div class="grid3">
+    <div class="panel wide"><div class="panel-head"><h2>Sales & Profit Trend</h2><span>Last 7 Days</span></div><canvas id="trendChart" height="210"></canvas></div>
+    <div class="panel"><div class="panel-head"><h2>Inventory by Category</h2><span>Cost Value</span></div><div id="categoryChart" class="donut-wrap"></div></div>
+  </div>
+  <div class="grid2">
+    <div class="panel"><div class="panel-head"><h2>Recent Transactions</h2><button class="link" onclick="showPage('reports')">View All →</button></div><div class="table-wrap"><table><thead><tr><th>Time</th><th>Type</th><th>Reference</th><th>Details</th><th>Amount</th></tr></thead><tbody id="recent"></tbody></table></div></div>
+    <div class="panel"><div class="panel-head"><h2>Low Stock Alert</h2><button class="link" onclick="showPage('inventory')">View All →</button></div><div class="table-wrap"><table><thead><tr><th>SKU</th><th>Product</th><th>Stock</th><th>Min</th><th>Status</th></tr></thead><tbody id="lowTable"></tbody></table></div></div>
+  </div>
+  <div class="formula"><span>Opening Inventory <b id="fOpen">0</b></span><i>+</i><span>Purchases <b id="fPurch">0</b></span><i>−</i><span>COGS <b id="fCogs">0</b></span><i>=</i><span>Closing Inventory <b id="fClose">0</b></span><em>Gross Profit <b id="fProfit">0</b></em></div>
+</section>
+
+<section id="pos" class="page">
+  <div class="section-title"><div><h2>Point of Sale</h2><p>Record sales and automatically update inventory, COGS and profit.</p></div><span class="ref" id="saleRefLabel"></span></div>
+  <div class="pos-layout">
+    <div class="panel">
+      <div class="form-grid"><label>Date<input type="date" id="posDate"></label><label>Customer / Note<input id="posCustomer" placeholder="Optional"></label><label>Payment<select id="posPayment"><option value="Cash" selected>Cash</option><option>Bank</option><option>Card</option><option>Mixed</option></select></label></div>
+      <div id="posLines"></div><button class="btn secondary" onclick="addPosLine()">＋ Add Item</button>
+    </div>
+    <div class="panel receipt">
+      <h3>Sale Summary</h3><div class="receipt-lines"><div>Items <b id="posItems">0</b></div><div>Revenue <b id="posRevenue">0</b></div><div>COGS <b id="posCogs">0</b></div><div class="profit-line">Gross Profit <b id="posProfit">0</b></div></div>
+      <button class="btn primary full" onclick="saveSale()">Complete Sale</button>
+    </div>
+  </div>
+  <div class="panel pos-history-panel">
+    <div class="panel-head"><div><h2>Sold Items History</h2><span>Check sold items by month and year.</span></div><div class="history-filters"><select id="posHistoryMonth" onchange="renderSalesHistory()"><option value="">Select Month</option></select><select id="posHistoryYear" onchange="renderSalesHistory()"><option value="">Select Year</option></select></div></div>
+    <div class="table-wrap"><table><thead><tr><th>Date</th><th>Reference</th><th>Item</th><th>Qty</th><th>Price</th><th>Actions</th></tr></thead><tbody id="salesHistory"></tbody></table></div>
+  </div>
+</section>
+
+<section id="products" class="page">
+  <div class="panel"><div class="panel-head"><div><h2>Product Master</h2><p>Every product has a permanent SKU and cost history.</p></div><button class="btn primary" onclick="openProductModal()">＋ Add Product</button></div>
+  <div class="filters"><input id="prodSearch" placeholder="Search SKU or product..." oninput="renderProducts()"><select id="prodCat" onchange="renderProducts()"><option value="">All Categories</option></select></div>
+  <div class="table-wrap"><table><thead><tr><th>SKU</th><th>Product</th><th>Category</th><th>Cost</th><th>Price</th><th>Stock</th><th>Min</th><th>Max</th><th>Value</th><th>Status</th><th>Actions</th></tr></thead><tbody id="productsTable"></tbody></table></div></div>
+</section>
+
+<section id="inventory" class="page">
+  <div class="panel"><div class="panel-head"><div><h2>Inventory Control</h2><p>Track opening stock, IN, OUT, adjustments and current balance.</p></div><button class="btn primary" onclick="startStockCount()">＋ Physical Stock Count</button></div>
+  <div class="inventory-summary cards mini"><div class="card"><span>Units on Hand</span><strong id="iUnits">0</strong></div><div class="card"><span>Inventory Cost</span><strong id="iValue">0</strong></div><div class="card"><span>Low Stock</span><strong id="iLow">0</strong></div><div class="card"><span>Out of Stock</span><strong id="iOut">0</strong></div></div>
+  <div class="filters"><input id="invSearch" placeholder="Search inventory..." oninput="renderInventory()"><select id="invStatus" onchange="renderInventory()"><option value="">All Status</option><option value="low">Low Stock</option><option value="out">Out of Stock</option><option value="ok">OK</option></select></div>
+  <div class="table-wrap"><table><thead><tr><th>SKU</th><th>Product</th><th>Opening</th><th>IN</th><th>OUT</th><th>Adjust</th><th>Current</th><th>Cost Value</th><th>Status</th></tr></thead><tbody id="inventoryTable"></tbody></table></div></div>
+</section>
+
+<section id="purchasing" class="page">
+  <div class="panel form-panel"><div class="section-title"><div><h2>Purchase / Receive Stock</h2><p>Receiving increases inventory capital at cost.</p></div><span class="ref" id="poRefLabel"></span></div>
+  <div class="form-grid"><label>Date<input type="date" id="poDate"></label><label>Supplier<select id="poSupplier"></select></label><label>Invoice / PO No.<input id="poRef" placeholder="PO-000001"></label></div>
+  <div id="poLines"></div><button class="btn secondary" onclick="addPoLine()">＋ Add Item</button>
+  <div class="total-box">Purchase Cost <b id="poTotal">0</b></div><button class="btn primary" onclick="savePurchase()">Receive & Post Stock</button></div>
+  <div class="panel"><div class="panel-head"><h2>Recent Purchases</h2></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Reference</th><th>Supplier</th><th>Items</th><th>Cost</th></tr></thead><tbody id="purchaseHistory"></tbody></table></div></div>
+</section>
+
+<section id="adjustments" class="page">
+  <div class="panel form-panel"><h2>Stock Adjustments</h2><p>Record spoilage, damage, expiry, missing stock, found stock, corrections or transfers.</p>
+  <div class="form-grid"><label>Date<input type="date" id="adjDate"></label><label>Product<select id="adjProduct"></select></label><label>Quantity<input type="number" id="adjQty" min="1" value="1"></label><label>Direction<select id="adjDirection"><option value="" selected disabled>Select Direction</option><option value="out">Decrease</option><option value="in">Increase</option></select></label><label>Reason<select id="adjReason"><option value="" selected disabled>Select Reason</option><option>Spoilage</option><option>Damage</option><option>Expired</option><option>Missing</option><option>Found Stock</option><option>Correction</option><option>Transfer</option></select></label><label>Reference<input id="adjRef" placeholder="ADJ-000001"></label></div>
+  <button class="btn primary" onclick="saveAdjustment()">Post Adjustment</button></div>
+  <div class="panel"><div class="panel-head"><h2>Adjustment History</h2></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Reference</th><th>Product</th><th>Qty</th><th>Reason</th><th>Cost Impact</th></tr></thead><tbody id="adjHistory"></tbody></table></div></div>
+</section>
+
+<section id="suppliers" class="page">
+  <div class="panel form-panel"><div class="panel-head"><h2>Suppliers</h2><button class="btn primary" onclick="addSupplier()">＋ Add Supplier</button></div>
+  <div class="table-wrap"><table><thead><tr><th>Supplier</th><th>Contact</th><th>Phone</th><th>Products Purchased</th><th>Total Purchases</th><th>Actions</th></tr></thead><tbody id="supplierTable"></tbody></table></div></div>
+</section>
+
+<section id="reports" class="page">
+  <div class="panel"><div class="panel-head"><div><h2>Sales & Profit Reports</h2><p>Use the date range for daily, weekly or monthly analysis.</p></div><div class="filters"><input type="date" id="rFrom"><input type="date" id="rTo"><button class="btn primary" onclick="renderReports()">Run</button></div></div>
+  <div class="cards mini"><div class="card"><span>Sales Revenue</span><strong id="rSales">0</strong></div><div class="card"><span>COGS</span><strong id="rCogs">0</strong></div><div class="card profit"><span>Gross Profit</span><strong id="rProfit">0</strong></div><div class="card"><span>Purchases</span><strong id="rPurch">0</strong></div></div>
+  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Sales</th><th>COGS</th><th>Gross Profit</th><th>Purchases</th><th>Adjustments</th></tr></thead><tbody id="reportTable"></tbody></table></div></div>
+</section>
+
+<section id="daily" class="page">
+  <div class="panel"><div class="section-title"><div><h2>Daily Closing</h2><p>Close the day by reconciling cash and inventory movement.</p></div><input type="date" id="closeDate" onchange="renderDaily()"></div>
+  <div class="cards mini"><div class="card"><span>Revenue</span><strong id="dSales">0</strong></div><div class="card"><span>COGS</span><strong id="dCogs">0</strong></div><div class="card profit"><span>Gross Profit</span><strong id="dProfit">0</strong></div><div class="card"><span>Purchases</span><strong id="dPurch">0</strong></div></div>
+  <div class="grid2"><div class="panel inset"><h3>Cash Reconciliation</h3><div class="form-grid"><label>Expected Cash<input id="expectedCash" readonly></label><label>Actual Cash<input id="actualCash" class="amount-input" type="text" inputmode="decimal" value="" placeholder="0" oninput="formatAmountInput(this);cashVariance()"></label></div><div class="variance">Cash Variance <b id="cashVar">0</b></div></div>
+  <div class="panel inset"><h3>Inventory Reconciliation</h3><div class="metric-list"><div>Opening Inventory <b id="dOpen">0</b></div><div>+ Purchases <b id="dPurchase">0</b></div><div>− COGS <b id="dCogs2">0</b></div><div>± Adjustments <b id="dAdj">0</b></div><div class="strong">Expected Closing <b id="dClose">0</b></div></div></div></div>
+  <button class="btn primary" onclick="saveDaily()">✓ Close Day</button></div>
+  <div class="panel"><div class="panel-head"><h2>Previous Daily Closings</h2></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Expected Cash</th><th>Actual Cash</th><th>Variance</th><th>Status</th></tr></thead><tbody id="dailyHistory"></tbody></table></div></div>
+</section>
+
+<section id="monthly" class="page">
+  <div class="panel"><div class="section-title"><div><h2>Monthly Closing & Carry-Over</h2><p>Closing stock automatically becomes the next month's opening stock.</p></div><input type="month" id="closeMonth"></div>
+  <div class="cards mini"><div class="card"><span>Opening Inventory</span><strong id="mOpen">0</strong></div><div class="card"><span>Purchases</span><strong id="mPurch">0</strong></div><div class="card"><span>COGS</span><strong id="mCogs">0</strong></div><div class="card profit"><span>Gross Profit</span><strong id="mProfit">0</strong></div></div>
+  <div class="closing-equation"><span>Opening <b id="meOpen">0</b></span><i>+</i><span>Purchases <b id="mePurch">0</b></span><i>−</i><span>COGS <b id="meCogs">0</b></span><i>±</i><span>Adjustments <b id="meAdj">0</b></span><i>=</i><strong>Closing <b id="meClose">0</b></strong></div>
+  <div class="notice">✓ When this month is closed, its closing inventory becomes the opening inventory for the following month. Historical transactions remain unchanged.</div>
+  <button class="btn primary" onclick="closeMonth()">✓ Close & Carry Forward</button></div>
+  <div class="panel"><div class="panel-head"><h2>Monthly Closing History</h2></div><div class="table-wrap"><table><thead><tr><th>Month</th><th>Opening</th><th>Purchases</th><th>COGS</th><th>Adjustments</th><th>Closing</th><th>Profit</th><th>Status</th></tr></thead><tbody id="monthlyHistory"></tbody></table></div></div>
+</section>
+
+<section id="settings" class="page">
+  <div class="panel form-panel"><div class="settings-heading"><h2>Store Settings</h2></div><div class="form-grid"><label>Store Name<input id="setName"></label><label>Campus / Branch<input id="setBranch"></label><label>Currency<input id="setCurrency"></label><label>Default Minimum Stock<input id="setMin" type="number"></label><label>System Theme<select id="setTheme"><option value="neerada">Neerada Theme</option><option value="mcdo">McDo Theme</option><option value="starbucks">Starbucks Theme</option><option value="kfc">KFC Theme</option></select></label></div><button class="btn primary" onclick="saveSettings()">Save Settings</button>
+  <hr><h3>Admin Account</h3><div class="form-grid"><label>Your Name<input id="adminName" autocomplete="name"></label><label>Login Email<input id="adminEmail" readonly></label><label>New Password<input id="adminNewPassword" type="password" autocomplete="new-password" placeholder="Leave blank to keep current"></label><label>Confirm New Password<input id="adminConfirmPassword" type="password" autocomplete="new-password" placeholder="Repeat new password"></label></div><button class="btn primary" onclick="saveAdminProfile()">Save Admin Profile</button><div id="adminStatus" class="login-status"></div>
+  <hr><h3>Database Backup</h3><p class="muted">All store data is stored in Firebase Cloud Firestore. Export JSON only when you need a manual backup.</p><div class="backup-actions"><button class="btn secondary" id="exportBtn">↓ Backup JSON</button><label class="btn secondary file-btn">↑ Restore<input id="importFile" type="file" accept=".json"></label><button class="btn danger" onclick="resetData()">Reset Cloud Database</button></div></div>
+</section>
+
+</main>
+
+<div id="appLoading" class="app-loading" hidden aria-live="polite">
+  <div class="loading-card"><div class="loading-spinner"></div><strong>Loading Neerada Inventory System</strong><span>Please wait...</span></div>
+</div>
+
+<div class="modal" id="productModal"><div class="modal-box"><div class="modal-head"><h2 id="modalTitle">Add Product</h2><button onclick="closeProductModal()">×</button></div>
+<div class="form-grid"><label>SKU<input id="pSku"></label><label>Product Name<input id="pName"></label><label>Category<input id="pCategory"></label><label>Unit Cost<input id="pCost" class="amount-input" type="text" inputmode="decimal" oninput="formatAmountInput(this)"></label><label>Selling Price<input id="pPrice" class="amount-input" type="text" inputmode="decimal" oninput="formatAmountInput(this)"></label><label>Opening Stock<input id="pStock" type="number"></label><label>Minimum Stock<input id="pMin" type="number"></label><label>Maximum Stock<input id="pMax" type="number"></label></div><input type="hidden" id="pId"><div class="modal-actions"><button class="btn secondary" onclick="closeProductModal()">Cancel</button><button class="btn primary" onclick="saveProduct()">Save Product</button></div></div></div>
+
+<script src="https://www.gstatic.com/firebasejs/13.4.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/13.4.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="app.js"></script>
+<script>window.addEventListener("load",function(){setTimeout(function(){var s=document.getElementById("splashScreen");if(s){s.classList.add("hide");setTimeout(function(){s.remove()},500)}},1800)});</script>
+</body>
+</html>
